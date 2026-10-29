@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FUWA - Prioritas Penyemaian Awan</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--sm:#042C8F;--hv:#4891E7;--cb:#86D0FD;--md:#C1E5FB;--pe:#BBE11A;--ga:#E8F957;--ink:#06235f;--mut:#45689a;--card:rgba(255,255,255,.72)}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 'Plus Jakarta Sans',system-ui,'Segoe UI',Roboto,sans-serif;color:var(--ink);min-height:100vh;background:linear-gradient(180deg,#d9f0ff,#b9e0fb 55%,#cfeaff) fixed}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1320px;margin:0 auto;padding:0 16px 32px}
+.hd{background:linear-gradient(180deg,var(--hv),var(--sm));color:#fff;padding:16px 0;box-shadow:0 6px 16px #042C8F40}
+.hd .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding-bottom:0}
+.hd h1{margin:0;font-size:30px;letter-spacing:.28em;font-weight:800}
+.hd p{margin:0;color:var(--ga);font-size:14px}
+.dt{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.dt button,.dt input{border:0;border-radius:10px;padding:8px 12px;font:inherit;font-weight:700;background:#fff;color:var(--sm)}
+.dt button:hover{background:var(--md)}
+.card{background:var(--card);border:1px solid #ffffffcc;border-radius:16px;box-shadow:0 6px 22px rgba(4,44,143,.10);padding:18px 20px;backdrop-filter:blur(6px)}
+.ct{font-weight:800;font-size:17px;color:var(--sm);margin:0 0 10px}
+.sub{color:var(--mut);font-size:13px;margin:0}
+.top{display:grid;grid-template-columns:1.25fr 1fr;gap:14px;margin-top:18px}
+.hero small{color:var(--mut);font-weight:600;font-size:14px}
+.hero h2{margin:4px 0 6px;font-size:clamp(22px,2.6vw,32px);line-height:1.2;color:var(--sm)}
+.pill{display:inline-block;margin-top:8px;padding:3px 12px;border-radius:99px;font-size:13px;font-weight:700;background:var(--ga);border:1px solid var(--pe);color:#3b4a00}
+.pill.warn{background:#fff3cd;border-color:#e6b800;color:#6b4e00}
+.rek{background:var(--sm);color:#fff;border:0}
+.rek .ct{color:var(--ga)}
+.rek ol{margin:0;padding-left:22px;font-size:15px}
+.rek li{margin:5px 0}
+.rek b{color:var(--ga)}
+.rek .cav{margin:8px 0 0;font-size:13px;color:var(--md)}
+.kpi{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.kpi .card{text-align:center}
+.kpi small{display:block;color:var(--mut);font-weight:600;font-size:13px}
+.kpi b{display:block;font-size:clamp(30px,4.2vw,46px);line-height:1.15;color:var(--sm);font-weight:800;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--mut);font-size:13px}
+.ctl{margin-top:14px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end}
+.ctl small{display:block;color:var(--mut);font-weight:600;font-size:12px;margin-bottom:3px}
+.seg{display:inline-flex;border:1px solid var(--cb);border-radius:10px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:7px 14px;font-weight:700;color:var(--mut)}
+.seg button[aria-pressed=true]{background:var(--hv);color:#fff}
+#mnote{width:100%;margin:0;font-size:13px;color:var(--mut)}
+.row3{display:grid;grid-template-columns:1.35fr 1fr;gap:14px;margin-top:14px}
+.mapc{display:flex;flex-direction:column}
+.mapw{flex:1;display:flex;align-items:center}
+#peta-svg{width:100%;height:auto;max-height:520px;display:block}
+#peta-svg path{stroke:#ffffffcc;stroke-width:.5;cursor:pointer}
+#peta-svg path.top{stroke:var(--pe);stroke-width:3.2}
+#peta-svg path.sel{stroke:var(--sm);stroke-width:3.2}
+#peta-svg path.off{opacity:.4;pointer-events:none}
+#peta-svg path.nodata{cursor:default}
+.leg{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--mut);margin-top:6px}
+.leg .gr{width:120px;height:10px;border-radius:5px;background:linear-gradient(90deg,#e8f6ff,#C1E5FB,#86D0FD,#4891E7,#042C8F)}
+.leg .sq{display:inline-block;width:13px;height:13px;border-radius:3px;border:3px solid var(--pe);vertical-align:-3px;margin-right:4px}
+table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:14px}
+th{font-weight:700;color:var(--mut);text-align:right;padding:4px;border-bottom:1px solid var(--cb);font-size:12px}
+td{padding:7px 4px;border-bottom:1px solid #ffffffaa;text-align:right;font-variant-numeric:tabular-nums}
+th:nth-child(1),td:nth-child(1){width:38px;text-align:center}
+th:nth-child(2),td:nth-child(2){text-align:left}
+th:nth-child(3),td:nth-child(3){width:70px}
+th:nth-child(4),td:nth-child(4){width:92px}
+th:nth-child(5),td:nth-child(5){width:112px}
+#t10 tr{cursor:pointer}
+#t10 tr:hover td,#t10 tr.sel td{background:#ffffffcc}
+.rk{display:inline-block;min-width:24px;border-radius:7px;background:var(--md);font-weight:800;font-size:13px}
+#t10 tr:nth-child(-n+3) .rk{background:var(--sm);color:var(--ga)}
+.nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nm small{color:var(--mut);font-size:12px;margin-left:6px}
+.sb{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.sb i{display:block;height:8px;border-radius:4px;background:var(--hv)}
+.det{margin-top:14px}
+.dh{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;justify-content:space-between}
+input[type=text]{font:inherit;padding:7px 10px;border:1px solid var(--cb);border-radius:10px;background:#fff;color:var(--ink);width:280px;max-width:100%}
+#dnama{font-size:24px;font-weight:800;color:var(--sm);line-height:1.2}
+.chips{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:12px 0 10px}
+.chip{background:#ffffffc0;border:1px solid var(--cb);border-radius:10px;padding:6px 10px}
+.chip small{display:block;color:var(--mut);font-size:12px}
+.chip b{font-size:18px;color:var(--sm)}
+.dnote{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+#trend{margin-top:0}
+.charts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:12px}
+.cap{font-weight:800;font-size:14px;color:var(--sm)}
+.ch svg{width:100%;height:auto;display:block;margin-top:4px}
+.ch svg text{font-size:10px;fill:var(--mut)}
+#tip{position:fixed;z-index:50;pointer-events:none;background:var(--sm);color:#fff;padding:6px 10px;border-radius:8px;font-size:13px;display:none}
+.strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.tr{display:flex;align-items:center;gap:14px;padding:12px 20px}
+.tr b{font-size:28px;color:var(--sm);min-width:66px}
+.tr span{font-size:14px}
+.empty{padding:30px;text-align:center;color:var(--mut)}
+footer{margin-top:14px;color:var(--mut);font-size:12.5px}
+@media(max-width:1000px){.top,.row3,.strip,.charts{grid-template-columns:minmax(0,1fr)}.chips{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.kpi{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<div class="hd"><div class="wrap">
+ <div><h1>FUWA</h1><p>Di mana awan perlu disemai untuk mencegah kebakaran hutan dan lahan</p></div>
+ <div class="dt"><button id="prev" aria-label="Hari sebelumnya">&lt;</button><input type="date" id="tgl" aria-label="Tanggal"><button id="next" aria-label="Hari berikutnya">&gt;</button><button id="latest">Terbaru</button></div>
+</div></div>
+<main class="wrap">
+ <section class="top">
+  <div class="card hero"><small>Kesimpulan hari ini</small><h2 id="kes">Memuat data</h2><p class="sub" id="kes2"></p><span class="pill" id="stat"></span></div>
+  <div class="card rek"><div class="ct">Yang perlu dilakukan sekarang</div><ol id="aksi"></ol><p class="cav">Skor ini alat bantu menentukan prioritas, bukan jaminan hujan turun.</p></div>
+ </section>
+ <section class="kpi">
+  <div class="card"><small>Wilayah paling perlu dibantu</small><b id="k1">-</b><span id="k1s"></span></div>
+  <div class="card"><small>Titik api 7 hari terakhir (10 wilayah teratas)</small><b id="k2">-</b><span>titik panas terdeteksi satelit</span></div>
+  <div class="card"><small>Peluang ada awan yang layak disemai</small><b id="k3">-</b><span id="k3s"></span></div>
+ </section>
+ <section class="card ctl">
+  <div><small>Cakupan</small><div class="seg" role="group" aria-label="Wilayah"><button id="sc-nas" aria-pressed="true">Seluruh Indonesia</button><button id="sc-enam" aria-pressed="false">6 provinsi prioritas</button></div></div>
+  <div><small>Cara menghitung peluang awan</small><div class="seg" role="group" aria-label="Model"><button id="md-c" aria-pressed="true">Prakiraan pagi (model C)</button><button id="md-d" aria-pressed="false">Konfirmasi satelit (model D)</button></div></div>
+  <p id="mnote">Prakiraan pagi memakai data cuaca pagi hari untuk merencanakan penyemaian. Konfirmasi satelit menambah foto awan satelit hari itu untuk memastikan awan.</p>
+ </section>
+ <section class="row3">
+  <div class="card mapc"><div class="ct">Peta prioritas</div>
+   <div class="mapw"><svg id="peta-svg" role="img" aria-label="Peta prioritas penyemaian awan per kabupaten dan kota"></svg></div>
+   <div><div class="leg"><span>Prioritas rendah <span class="gr" style="display:inline-block;vertical-align:middle"></span> tinggi</span><span><i class="sq"></i>3 teratas</span></div>
+   <p class="sub" style="margin-top:6px">Klik wilayah di peta untuk melihat rinciannya di bawah.</p></div></div>
+  <div class="card"><div class="ct">10 wilayah teratas</div>
+   <table><thead><tr><th>#</th><th>Wilayah</th><th>Titik api</th><th>Peluang awan</th><th>Prioritas</th></tr></thead><tbody id="t10"></tbody></table>
+   <p class="sub" style="margin-top:10px">Klik baris untuk melihat rinciannya. Titik api dihitung 7 hari sebelum tanggal terpilih.</p></div>
+ </section>
+ <section class="card det"><div class="ct">Rincian wilayah</div>
+  <div class="dh"><div><div id="dnama">-</div><div class="sub" id="dprov"></div></div>
+   <div><small class="sub" style="display:block">Cari kabupaten/kota</small><input type="text" id="cari" list="kablist" placeholder="Ketik nama, lalu pilih"><datalist id="kablist"></datalist></div></div>
+  <div class="chips" id="chips"></div>
+  <div class="dnote"><span class="pill" id="trend"></span><span class="sub">Grafik 90 hari terakhir. Garis abu-abu di dasar berarti data kosong, bukan nol.</span></div>
+  <div class="charts">
+   <div><div class="cap">Titik api per hari</div><p class="sub">Titik panas terdeteksi tiap hari</p><div class="ch" id="c-tp"></div></div>
+   <div><div class="cap">Peluang awan layak semai</div><p class="sub">Awan sudah ada, hujan belum merata (K1)</p><div class="ch" id="c-pk"></div></div>
+   <div><div class="cap">Tingkat prioritas</div><p class="sub">Skala 0 sampai 1, makin tinggi makin perlu</p><div class="ch" id="c-sk"></div></div>
+  </div></section>
+ <section class="strip">
+  <div class="card tr"><b id="tr1">0,79</b><span>Titik api yang terdeteksi selaras dengan luas kebakaran yang tercatat di SiPongi (skala 0 sampai 1).</span></div>
+  <div class="card tr"><b id="tr2">0,69</b><span id="tr2t"></span></div>
+ </section>
+ <footer>Sumber data: satelit titik panas FIRMS VIIRS, cuaca ERA5, citra awan Himawari, peta gambut 2019, batas wilayah GADM 4.1, SiPongi. Peringkat memperhitungkan lahan gambut.</footer>
+</main>
+<div id="tip"></div>
+<script src="fuwa_geo.js"></script>
+<script src="fuwa_data.js"></script>
+<script src="fuwa_data_d.js" onerror="void 0"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s);
+const f=(v,n=0)=>v==null?'-':Number(v).toLocaleString('id-ID',{minimumFractionDigits:n,maximumFractionDigits:n});
+const tg=s=>{const[y,m,d]=s.split('-');return d+'/'+m+'/'+y};
+const G=window.FUWA_GEO,D=window.FUWA;
+if(!G||!D){$('main').innerHTML='<div class="card empty"><b>Data belum dimuat.</b><br>Salin fuwa_data.js dan fuwa_geo.js ke folder yang sama dengan berkas ini.</div>';return}
+const N=D.kab.length,T=D.tgl.length,idx={};
+D.kab.forEach((k,i)=>idx[k.id]=i);
+const g=(a,d,k,sc=1)=>{const v=D[a][d*N+k];return v<0?null:v/sc};
+const S={d:T-1,six:false,k:0,rows:[],mode:'C',msg:''};
+const latest=()=>{for(let d=T-1;d>=0;d--){for(let k=0;k<N;k++)if(D.skor[d*N+k]>=0)return d}return T-1};
+S.d=latest();
+
+const DD=window.FUWA_D,mt={},mk={};
+if(DD){DD.tgl.forEach((t,i)=>mt[t]=i);DD.kab.forEach((x,i)=>mk[x]=i)}
+const di=(d,k)=>{const a=mt[D.tgl[d]],b=mk[D.kab[k].id];return a==null||b==null?-1:a*DD.kab.length+b};
+const pd=(d,k)=>{const i=di(d,k);if(i<0)return null;const v=DD.pk1d[i];return v<0?null:v/1000};
+const himOk=(d,k)=>{const i=di(d,k);return i>=0&&DD.him[i]===1};
+const gp=(d,k,sc)=>{if(S.mode==='D'&&DD){const v=pd(d,k);return v==null?null:v*1000/sc}return g('pk1',d,k,sc)};
+function rk(a){const ix=[];a.forEach((v,i)=>{if(v!=null)ix.push(i)});ix.sort((x,y)=>a[x]-a[y]);
+  const r=new Array(a.length).fill(null),n=ix.length;let i=0;
+  while(i<n){let j=i;while(j+1<n&&a[ix[j+1]]===a[ix[i]])j++;const av=(i+j)/2+1;for(let t=i;t<=j;t++)r[ix[t]]=av/n;i=j+1}
+  return r}
+const RG=rk(D.kab.map(x=>x.gambut)),cacheD={};
+function skD(d){if(cacheD[d])return cacheD[d];
+  const aw=rk(Array.from({length:N},(_,k)=>pd(d,k))),ap=rk(Array.from({length:N},(_,k)=>g('api',d,k)));
+  return cacheD[d]=aw.map((x,k)=>x==null||ap[k]==null?null:x*ap[k]*RG[k])}
+const sc=(d,k)=>S.mode==='D'&&DD?skD(d)[k]:g('skor',d,k,1000);
+
+const STOPS=[[232,246,255],[193,229,251],[134,208,253],[72,145,231],[4,44,143]];
+const ramp=v=>{v=Math.max(0,Math.min(1,v))*4;const i=Math.min(3,Math.floor(v)),t=v-i;return 'rgb('+STOPS[i].map((c,j)=>Math.round(c+(STOPS[i+1][j]-c)*t)).join(',')+')'};
+
+const SC=40,W=1860,H=720,svg=$('#peta-svg');
+const px=(lo,la)=>[(lo-94.5)*SC,(6.5-la)*SC];
+const paths=[],byK=[];
+let html='<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#f4f7fa"/><rect width="3" height="6" fill="#cfd8e3"/></pattern></defs>';
+G.features.forEach((ft,j)=>{
+  const geom=ft.geometry,polys=geom.type==='Polygon'?[geom.coordinates]:geom.coordinates;
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  const dd=polys.map(p=>p.map(r=>'M'+r.map(c=>{const q=px(c[0],c[1]);x0=Math.min(x0,q[0]);x1=Math.max(x1,q[0]);y0=Math.min(y0,q[1]);y1=Math.max(y1,q[1]);return q[0].toFixed(1)+','+q[1].toFixed(1)}).join('L')+'Z').join('')).join('');
+  paths.push({k:idx[ft.properties.GID_2],bb:[x0,y0,x1,y1]});
+  html+=`<path d="${dd}" data-j="${j}"/>`;
+});
+svg.innerHTML=html;
+const els=svg.querySelectorAll('path');
+paths.forEach((p,j)=>{p.el=els[j];if(p.k!=null)byK[p.k]=p});
+
+function zoom(){
+  let b=[0,0,W,H];
+  if(S.six){b=[1e9,1e9,-1e9,-1e9];paths.forEach(p=>{if(p.k!=null&&D.kab[p.k].enam)b=[Math.min(b[0],p.bb[0]),Math.min(b[1],p.bb[1]),Math.max(b[2],p.bb[2]),Math.max(b[3],p.bb[3])]});b=[b[0]-30,b[1]-30,b[2]+30,b[3]+30]}
+  svg.setAttribute('viewBox',`${b[0]} ${b[1]} ${b[2]-b[0]} ${b[3]-b[1]}`);
+}
+function rowsOf(){
+  const r=[];
+  for(let k=0;k<N;k++){if(S.six&&!D.kab[k].enam)continue;const s=sc(S.d,k);if(s!=null)r.push({k,s})}
+  return r.sort((a,b)=>b.s-a.s);
+}
+function drawMap(){
+  const top=new Set(S.rows.slice(0,3).map(r=>r.k));
+  paths.forEach(p=>{
+    const e=p.el;e.classList.remove('top','sel','off','nodata');
+    if(p.k==null){e.style.fill='#e6edf5';e.classList.add('nodata');return}
+    if(S.six&&!D.kab[p.k].enam){e.style.fill='#e9eff6';e.classList.add('off');return}
+    const v=sc(S.d,p.k);
+    if(v==null){e.style.fill='url(#hatch)';e.classList.add('nodata')}else e.style.fill=ramp(v);
+    if(top.has(p.k))e.classList.add('top');
+  });
+  S.rows.slice(0,3).forEach(r=>svg.appendChild(byK[r.k].el));
+  if(byK[S.k]){byK[S.k].el.classList.add('sel');svg.appendChild(byK[S.k].el)}
+}
+const nm=k=>D.kab[k].nama;
+function summary(){
+  const r=S.rows,t=r.slice(0,10),dt=D.tgl[S.d];
+  let kosong=0;for(let k=0;k<N;k++)if(D.tp[S.d*N+k]<0)kosong++;
+  const st=$('#stat');
+  if(!r.length){
+    $('#kes').textContent='Skor belum tersedia pada tanggal ini.';$('#kes2').textContent='Pilih tanggal lain atau tekan Terbaru.';
+    st.textContent='Data tidak lengkap';st.className='pill warn';
+    ['k1','k2','k3'].forEach(i=>$('#'+i).textContent='-');$('#k1s').textContent='';$('#k3s').textContent='';$('#aksi').innerHTML='<li>Tekan Terbaru untuk melihat tanggal yang datanya tersedia.</li>';
+    return;
+  }
+  const a=t[0].k;
+  $('#kes').textContent='Fokus penyemaian awan: '+r.slice(0,3).map(x=>nm(x.k)).join(', ')+'.';
+  $('#kes2').textContent='Tiga wilayah ini punya gabungan titik api dan peluang awan tertinggi pada '+tg(dt)+(S.six?' (6 provinsi prioritas).':' (seluruh Indonesia).');
+  const lengkap=kosong<=N*.5;
+  st.textContent=lengkap?'Data lengkap':'Data titik api hari ini belum lengkap';st.className='pill'+(lengkap?'':' warn');
+  $('#k1').textContent=nm(a);$('#k1s').textContent=D.kab[a].prov;
+  $('#k2').textContent=f(t.reduce((s,x)=>s+(g('api',S.d,x.k)||0),0));
+  $('#k3').textContent=f(gp(S.d,a,10),0)+'%';$('#k3s').textContent='di '+nm(a);
+  const pc=x=>gp(S.d,x.k,10)||0;
+  const best=t.reduce((m,x)=>pc(x)>pc(m)?x:m,t[0]);
+  const pt=t.reduce((m,x)=>D.kab[x.k].gambut>D.kab[m.k].gambut?x:m,t[0]);
+  const b=x=>'<b>'+x+'</b>';
+  const li=['Kirim tim penyemaian awan ke '+r.slice(0,3).map(x=>b(nm(x.k))).join(', ')+'.',
+    'Mulai dari '+b(nm(best.k))+': peluang awan layak semai paling besar ('+f(gp(S.d,best.k,10),0)+'%) di antara 10 teratas.'];
+  if(D.kab[pt.k].gambut>0)li.push('Siagakan pemadaman darat di '+b(nm(pt.k))+': '+f(D.kab[pt.k].gambut,0)+'% lahannya gambut, api di sana sulit dipadamkan.');
+  li.push('Cek ulang tiap pagi. Skor berubah mengikuti titik api dan cuaca.');
+  $('#aksi').innerHTML=li.map(x=>'<li>'+x+'</li>').join('');
+}
+function table(){
+  $('#t10').innerHTML=S.rows.length?S.rows.slice(0,10).map((x,i)=>`<tr data-k="${x.k}" class="${x.k===S.k?'sel':''}"><td><span class="rk">${i+1}</span></td><td class="nm"><b>${nm(x.k)}</b><small>${D.kab[x.k].prov}</small></td><td>${f(g('api',S.d,x.k))}</td><td>${f(gp(S.d,x.k,10),0)}%</td><td><div class="sb"><i style="width:${Math.round(x.s*60)}px"></i>${f(x.s*100)}</div></td></tr>`).join(''):'<tr><td colspan="5" class="sub" style="text-align:center;padding:20px">Skor tidak tersedia pada tanggal ini.</td></tr>';
+}
+function chart(v,dt,o){
+  const w=420,h=140,l=34,r=6,t=8,b=18,n=v.length,pw=(w-l-r)/n;
+  const nums=v.filter(x=>x!=null),mx=o.max||Math.max(1e-9,...nums)*1.1;
+  const X=i=>l+i*pw,Y=x=>t+(h-t-b)*(1-x/mx);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img">`;
+  [0,.5,1].forEach(q=>{const y=Y(mx*q);s+=`<line x1="${l}" x2="${w-r}" y1="${y}" y2="${y}" stroke="#d3e3f4"/><text x="${l-4}" y="${y+3}" text-anchor="end">${o.fmt(mx*q)}</text>`});
+  let p='',pen=0;
+  v.forEach((x,i)=>{
+    if(x==null){pen=0;s+=`<rect x="${X(i)}" y="${h-b-3}" width="${Math.max(pw-1,1)}" height="3" fill="#aab7c6"/>`;return}
+    if(o.bar)s+=`<rect x="${X(i)+.5}" y="${Y(x)}" width="${Math.max(pw-1,1)}" height="${h-b-Y(x)}" fill="${o.c}" rx="1"/>`;
+    else{p+=(pen?'L':'M')+(X(i)+pw/2).toFixed(1)+','+Y(x).toFixed(1);pen=1}
+  });
+  if(!o.bar)s+=`<path d="${p}" fill="none" stroke="${o.c}" stroke-width="2" stroke-linejoin="round"/>`;
+  s+=`<line x1="${X(n-1)+pw/2}" x2="${X(n-1)+pw/2}" y1="${t}" y2="${h-b}" stroke="#8aa80f" stroke-dasharray="3 3"/>`;
+  v.forEach((x,i)=>s+=`<rect x="${X(i)}" y="${t}" width="${pw}" height="${h-t-b}" fill="transparent"><title>${tg(dt[i])}: ${x==null?'data kosong':o.fmt(x)}</title></rect>`);
+  [0,Math.floor((n-1)/2),n-1].forEach((i,j)=>s+=`<text x="${X(i)+pw/2}" y="${h-4}" text-anchor="${j==0?'start':j==2?'end':'middle'}">${tg(dt[i]).slice(0,5)}</text>`);
+  return s+'</svg>';
+}
+function trend(k,d1){
+  let a=0,na=0,b=0,nb=0;
+  for(let i=Math.max(0,d1-6);i<=d1;i++){const v=g('tp',i,k);if(v!=null){a+=v;na++}}
+  for(let i=Math.max(0,d1-36);i<=d1-7;i++){const v=g('tp',i,k);if(v!=null){b+=v;nb++}}
+  const el=$('#trend');
+  if(na<4||nb<15){el.textContent='Data titik api belum cukup untuk melihat tren';el.className='pill warn';return}
+  const ma=a/na,mb=b/nb;
+  if(ma===0&&mb===0){el.textContent='Belum ada titik api terdeteksi';el.className='pill';return}
+  if(mb===0){el.textContent='Titik api baru muncul dalam 7 hari terakhir';el.className='pill warn';return}
+  const q=ma/mb;
+  if(q>=1.25){el.textContent='Titik api 7 hari terakhir naik '+f(q,1)+' kali lipat dibanding 30 hari sebelumnya';el.className='pill warn'}
+  else if(q<=.8){el.textContent='Titik api 7 hari terakhir turun ke '+f(q,1)+' kali dibanding 30 hari sebelumnya';el.className='pill'}
+  else{el.textContent='Titik api 7 hari terakhir relatif stabil';el.className='pill'}
+}
+function detail(){
+  const k=S.k,kb=D.kab[k],d1=S.d,d0=Math.max(0,d1-89),dt=D.tgl.slice(d0,d1+1);
+  const col=a=>{const o=[];for(let d=d0;d<=d1;d++)o.push(a==='SK'?sc(d,k):a==='pk'?gp(d,k,1000):g(a,d,k));return o};
+  $('#dnama').textContent=kb.nama;$('#dprov').textContent=kb.prov+', gambut '+f(kb.gambut,1)+'% (peta 2019)';
+  $('#cari').value=kb.nama+' ('+kb.prov+')';
+  const rk0=S.rows.findIndex(r=>r.k===k),s=sc(d1,k);
+  $('#chips').innerHTML=[['Peringkat',rk0<0?'-':(rk0+1)+' dari '+S.rows.length],['Prioritas',s==null?'-':f(s*100)+' dari 100'],['Peluang awan layak semai',f(gp(d1,k,10),1)+'%'],['Titik api 7 hari terakhir',f(g('api',d1,k))],['Titik api hari itu',f(g('tp',d1,k))]]
+    .map(c=>`<div class="chip"><small>${c[0]}</small><b>${c[1]}</b></div>`).join('');
+  trend(k,d1);
+  $('#c-tp').innerHTML=chart(col('tp'),dt,{bar:1,c:'#8aa80f',fmt:v=>f(v)});
+  $('#c-pk').innerHTML=chart(col('pk'),dt,{c:'#042C8F',fmt:v=>f(v*100,0)+'%'});
+  $('#c-sk').innerHTML=chart(col('SK'),dt,{c:'#4891E7',max:1,fmt:v=>f(v,2)});
+}
+const lab={};D.kab.forEach((kb,i)=>lab[kb.nama+' ('+kb.prov+')']=i);
+$('#kablist').innerHTML=Object.keys(lab).map(x=>`<option value="${x}">`).join('');
+$('#cari').addEventListener('change',e=>{const i=lab[e.target.value];if(i!=null){S.k=i;render()}else e.target.value=D.kab[S.k].nama+' ('+D.kab[S.k].prov+')'});
+function extra(){
+  const m=S.mode;
+  $('#tr2').textContent=f(m==='D'?.7058:.6863,2);
+  $('#tr2t').textContent='Ketepatan prakiraan awan ('+(m==='D'?'konfirmasi satelit':'prakiraan pagi')+'). Lebih baik dari tebakan acak (0,50), tetapi belum sempurna.';
+  const n=$('#mnote');
+  n.textContent=S.msg||'Prakiraan pagi memakai data cuaca pagi hari untuk merencanakan penyemaian. Konfirmasi satelit menambah foto awan satelit hari itu untuk memastikan awan.';
+  if(S.mode==='D'&&DD){let n0=0;for(let k=0;k<N;k++)if(!himOk(S.d,k))n0++;if(n0)n.textContent+=' '+n0+' dari '+N+' wilayah belum punya foto satelit hari itu, jadi memakai prakiraan pagi.'}
+  S.msg='';
+}
+function render(){
+  S.rows=rowsOf();
+  if(S.rows.length&&(sc(S.d,S.k)==null||(S.six&&!D.kab[S.k].enam)))S.k=S.rows[0].k;
+  zoom();drawMap();summary();table();detail();extra();
+  $('#tgl').value=D.tgl[S.d];
+  $('#sc-nas').setAttribute('aria-pressed',!S.six);$('#sc-enam').setAttribute('aria-pressed',S.six);
+  $('#md-c').setAttribute('aria-pressed',S.mode==='C');$('#md-d').setAttribute('aria-pressed',S.mode==='D');
+}
+const tip=$('#tip');
+svg.addEventListener('mousemove',e=>{
+  const el=e.target.closest('path');if(!el){tip.style.display='none';return}
+  const p=paths[+el.dataset.j];if(p.k==null){tip.style.display='none';return}
+  const s=sc(S.d,p.k);
+  tip.innerHTML='<b>'+nm(p.k)+'</b><br>'+D.kab[p.k].prov+'<br>Prioritas '+(s==null?'tidak tersedia':f(s*100)+' dari 100');
+  tip.style.display='block';tip.style.left=Math.min(e.clientX+14,innerWidth-200)+'px';tip.style.top=(e.clientY+14)+'px';
+});
+svg.addEventListener('mouseleave',()=>tip.style.display='none');
+svg.addEventListener('click',e=>{const el=e.target.closest('path');if(!el)return;const p=paths[+el.dataset.j];if(p.k!=null&&!el.classList.contains('off')&&sc(S.d,p.k)!=null){S.k=p.k;render()}});
+$('#t10').addEventListener('click',e=>{const tr=e.target.closest('tr[data-k]');if(tr){S.k=+tr.dataset.k;render()}});
+$('#tgl').min=D.tgl[0];$('#tgl').max=D.tgl[T-1];
+$('#tgl').addEventListener('change',e=>{const i=D.tgl.indexOf(e.target.value);if(i>=0){S.d=i;render()}else e.target.value=D.tgl[S.d]});
+$('#prev').onclick=()=>{if(S.d>0){S.d--;render()}};
+$('#next').onclick=()=>{if(S.d<T-1){S.d++;render()}};
+$('#latest').onclick=()=>{S.d=latest();render()};
+$('#sc-nas').onclick=()=>{S.six=false;render()};
+$('#sc-enam').onclick=()=>{S.six=true;render()};
+$('#md-c').onclick=()=>{S.mode='C';render()};
+$('#md-d').onclick=()=>{if(DD)S.mode='D';else S.msg='Berkas fuwa_data_d.js belum ada di folder ini, jadi model D belum bisa dipakai.';render()};
+S.rows=rowsOf();if(S.rows.length)S.k=S.rows[0].k;
+render();
+})();
+</script>
+</body>
+</html>
